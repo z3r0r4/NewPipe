@@ -32,7 +32,6 @@ allprojects {
                 //  org.jetbrains.trove4j is only available in JCenter
                 includeGroup("org.jetbrains.trove4j")
                 includeGroup("com.google.android.exoplayer")
-                includeGroup("com.nononsenseapps")
                 includeGroup("com.xwray")
             }
         }
