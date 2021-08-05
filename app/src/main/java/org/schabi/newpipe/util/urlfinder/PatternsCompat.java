@@ -361,7 +361,7 @@ public final class PatternsCompat {
 
     public static final Pattern EMAIL_ADDRESS
             = Pattern.compile(
-            "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}"
+            "[a-zA-Z0-9\\.\\_\\%\\-\\+]{1,256}"
                     + "\\@"
                     + "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}"
                     + "("
