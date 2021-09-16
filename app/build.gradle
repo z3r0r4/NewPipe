@@ -161,7 +161,7 @@ task formatKtlint(type: JavaExec) {
 
 afterEvaluate {
     if (!System.properties.containsKey('skipFormatKtlint')) {
-//        preDebugBuild.dependsOn formatKtlint
+        preDebugBuild.dependsOn formatKtlint
     }
     preDebugBuild.dependsOn runCheckstyle, runKtlint
 }
@@ -178,6 +178,7 @@ preBuild {
             def sdkString = "Android API " + android.compileSdkVersion.substring("android-".length()) + " Platform"
             new Node(parsedXml.component[1], 'orderEntry', ['type': 'jdk', 'jdkName': sdkString, 'jdkType': 'Android SDK'])
             groovy.xml.XmlUtil.serialize(parsedXml, new FileOutputStream(imlFile))
+            println "CHANGED ORDER"
         } catch (FileNotFoundException e) {
             // nop, iml not found
         }
