@@ -1,5 +1,6 @@
 plugins {
     id "org.sonarqube" version "3.1.1"
+    id "groovy"
 }
 
 apply plugin: 'com.android.application'
@@ -16,7 +17,7 @@ android {
         applicationId "org.schabi.newpipe"
         resValue "string", "app_name", "NewPipe"
         minSdkVersion 19
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 975
         versionName "0.21.9"
 
@@ -175,6 +176,9 @@ sonarqube {
 }
 
 dependencies {
+/** ANDROID HIDDEN API **/
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+//    classpath 'org.codehaus.groovy:gradle-groovy-android-plugin:0.3.6'
 /** Desugaring **/
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 
