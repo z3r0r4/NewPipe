@@ -1,6 +1,5 @@
 plugins {
     id "org.sonarqube" version "3.1.1"
-    id "groovy"
 }
 
 apply plugin: 'com.android.application'
@@ -162,9 +161,27 @@ task formatKtlint(type: JavaExec) {
 
 afterEvaluate {
     if (!System.properties.containsKey('skipFormatKtlint')) {
-        preDebugBuild.dependsOn formatKtlint
+//        preDebugBuild.dependsOn formatKtlint
     }
     preDebugBuild.dependsOn runCheckstyle, runKtlint
+}
+
+preBuild {
+    doLast {
+        def imlFile = file(project.name + ".iml")
+        println 'Change ' + project.name + '.iml order'
+        try {
+//            def parsedXml =
+            def parsedXml = (new XmlParser()).parse(imlFile)
+            def jdkNode = parsedXml.component[1].orderEntry.find { it.'@type' == 'jdk' }
+            parsedXml.component[1].remove(jdkNode)
+            def sdkString = "Android API " + android.compileSdkVersion.substring("android-".length()) + " Platform"
+            new Node(parsedXml.component[1], 'orderEntry', ['type': 'jdk', 'jdkName': sdkString, 'jdkType': 'Android SDK'])
+            groovy.xml.XmlUtil.serialize(parsedXml, new FileOutputStream(imlFile))
+        } catch (FileNotFoundException e) {
+            // nop, iml not found
+        }
+    }
 }
 
 sonarqube {
@@ -178,6 +195,7 @@ sonarqube {
 dependencies {
 /** ANDROID HIDDEN API **/
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
 //    classpath 'org.codehaus.groovy:gradle-groovy-android-plugin:0.3.6'
 /** Desugaring **/
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'

@@ -54,6 +54,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.navigation.NavigationView;
 
 import org.schabi.newpipe.databinding.ActivityMainBinding;
 import org.schabi.newpipe.databinding.DrawerHeaderBinding;
@@ -228,8 +229,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        drawerLayoutBinding.navigation
-                .setNavigationItemSelectedListener(s -> this.drawerItemSelected(s));
+        drawerLayoutBinding.navigation.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull final MenuItem item) {
+                return drawerItemSelected(item);
+            }
+        });
         setupDrawerHeader();
     }
 
