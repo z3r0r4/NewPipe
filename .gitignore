@@ -6,8 +6,8 @@
 /captures
 /app/app.iml
 /.idea
-!/.idea/modules
-/*.iml
+!/.idea/modules/NewPipe.iml
+!/.idea/modules/app/NewPipe.app.iml
 *~
 .weblate
 *.class
