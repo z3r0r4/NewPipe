@@ -165,7 +165,7 @@ afterEvaluate {
     if (!System.properties.containsKey('skipFormatKtlint')) {
         preDebugBuild.dependsOn formatKtlint
     }
-    preDebugBuild.dependsOn runCheckstyle, runKtlint
+//    preDebugBuild.dependsOn runCheckstyle, runKtlint
 }
 
 preBuild {
@@ -225,7 +225,7 @@ sonarqube {
 
 dependencies {
 /** ANDROID HIDDEN API **/
-    implementation 'com.github.ChickenHook:RestrictionBypass:2.2'
+//    implementation 'com.github.ChickenHook:RestrictionBypass:2.2'
 //    implementation 'com.anggrayudi:android-hidden-api:30.0'
 //    implementation fileTree(dir: 'libs', include: ['*.jar'])
 //    implementation files("D:\\Hackel\\WorkSpace\\Talent\\Science\\IT\\Development\\NewPipe\\app\\libs\\android-30.jar")

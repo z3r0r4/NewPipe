@@ -57,7 +57,6 @@ import androidx.preference.PreferenceManager;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 
-import org.chickenhook.restrictionbypass.RestrictionBypass;
 import org.schabi.newpipe.databinding.ActivityMainBinding;
 import org.schabi.newpipe.databinding.DrawerHeaderBinding;
 import org.schabi.newpipe.databinding.DrawerLayoutBinding;
@@ -90,7 +89,6 @@ import org.schabi.newpipe.util.TLSSocketFactoryCompat;
 import org.schabi.newpipe.util.ThemeHelper;
 import org.schabi.newpipe.views.FocusOverlayView;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -131,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         if (DEBUG) {
-            Log.d(TAG, "onCreate() called with: "
+            com.google.android.exoplayer2.util.Log.d(TAG, "onCreate() called with: "
                     + "savedInstanceState = [" + savedInstanceState + "]");
         }
 
@@ -167,7 +165,43 @@ public class MainActivity extends AppCompatActivity {
         if (DeviceUtils.isTv(this)) {
             FocusOverlayView.setupFocusObserver(this);
         }
+
+        checkLongPressListenerPermission();
+
         openMiniPlayerUponPlayerStarted();
+    }
+
+    private void checkLongPressListenerPermission() {
+        try {
+            Log.e(TAG, "checkLongPressListenerPermission: CHECKING PERMISSIONS4");
+//            Field PERMISSION =
+//                    RestrictionBypass.getDeclaredField(Manifest.class,
+//                            "permission.SET_VOLUME_KEY_LONG_PRESS_LISTENER");
+//            PERMISSION.setAccessible(true);
+//            String permision = (String) PERMISSION.get(PERMISSION);
+
+            String permision = Manifest.permission.SET_VOLUME_KEY_LONG_PRESS_LISTENER;
+
+            Log.e(TAG, "checkLongPressListenerPermission: CHECKING PERMISSIONS5");
+            int permission = 0;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                permission = checkSelfPermission(permision);
+
+                Log.e(TAG, "checkLongPressListenerPermission: CHECKING PERMISSIONS6");
+            }
+
+            if (permission != PackageManager.PERMISSION_GRANTED) {
+
+                Log.e(TAG, "checkLongPressListenerPermission: CHECKING PERMISSIONS7");
+                throw new NullPointerException();
+            } else {
+                Log.e(TAG, "checkLongPressListenerPermission: PERMMMMISSION");
+            }
+        } catch (final NullPointerException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     private void setupDrawer() throws Exception {
@@ -559,15 +593,7 @@ public class MainActivity extends AppCompatActivity {
             return ((OnKeyDownListener) fragment).onKeyDown(keyCode)
                     || super.onKeyDown(keyCode, event);
         }
-        try {
-            Field permission = RestrictionBypass.getDeclaredField(Manifest.permission.class,"SET_VOLUME_KEY_LONG_PRESS_LISTENER");
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+
         if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
             event.startTracking();
             return true;
