@@ -22,22 +22,36 @@ package org.schabi.newpipe.player;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.media.session.MediaSessionManager;
 import android.os.Binder;
+import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 import org.schabi.newpipe.App;
+import org.schabi.newpipe.R;
 import org.schabi.newpipe.databinding.PlayerBinding;
+import org.schabi.newpipe.player.event.OnKeyDownListener;
 import org.schabi.newpipe.util.DeviceUtils;
 import org.schabi.newpipe.util.ThemeHelper;
 
+import static android.view.KeyEvent.FLAG_FROM_SYSTEM;
+import static android.view.KeyEvent.FLAG_LONG_PRESS;
+import static android.view.KeyEvent.KEYCODE_MEDIA_NEXT;
+import static android.view.KeyEvent.KEYCODE_MEDIA_PREVIOUS;
+import static android.view.KeyEvent.KEYCODE_VOLUME_DOWN;
+import static android.view.KeyEvent.KEYCODE_VOLUME_UP;
 import static org.schabi.newpipe.util.Localization.assureCorrectAppLanguage;
 
 
@@ -46,7 +60,7 @@ import static org.schabi.newpipe.util.Localization.assureCorrectAppLanguage;
  *
  * @author mauriciocolli
  */
-public final class MainPlayer extends Service {
+public final class MainPlayer extends Service implements MediaSessionManager.OnVolumeKeyLongPressListener {
     private static final String TAG = "MainPlayer";
     private static final boolean DEBUG = Player.DEBUG;
 
@@ -54,6 +68,8 @@ public final class MainPlayer extends Service {
     private WindowManager windowManager;
 
     private final IBinder mBinder = new MainPlayer.LocalBinder();
+
+
 
     public enum PlayerType {
         VIDEO,
@@ -88,6 +104,9 @@ public final class MainPlayer extends Service {
     // Service's LifeCycle
     //////////////////////////////////////////////////////////////////////////*/
 
+    private MediaSessionManager mediaSessionManager;
+    private Handler mHandler;
+
     @Override
     public void onCreate() {
         if (DEBUG) {
@@ -98,6 +117,30 @@ public final class MainPlayer extends Service {
 
         ThemeHelper.setTheme(this);
         createView();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mediaSessionManager = getSystemService(MediaSessionManager.class);
+        }
+        mHandler = new Handler();
+
+        mediaSessionManager.setOnVolumeKeyLongPressListener(this, mHandler);
+    }
+
+    @Override
+    public void onVolumeKeyLongPress(KeyEvent keyEvent) {
+        int flags = keyEvent.getFlags();
+        if(!(flags == FLAG_FROM_SYSTEM || flags == FLAG_LONG_PRESS)) return;
+
+        if(keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyEvent.getRepeatCount() <= 1) {
+            int keyCode = keyEvent.getKeyCode();
+            if (keyCode == KEYCODE_VOLUME_UP) {
+                this.sendBroadcast(new Intent(ACTION_PLAY_NEXT));
+                Toast.makeText(this,  "UP", Toast.LENGTH_SHORT).show();
+            }
+            if (keyCode == KEYCODE_VOLUME_DOWN) {
+                this.sendBroadcast(new Intent(ACTION_PLAY_PREVIOUS));
+                Toast.makeText(this, "DOWN", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void createView() {
@@ -132,6 +175,8 @@ public final class MainPlayer extends Service {
         }
         return START_NOT_STICKY;
     }
+
+
 
     public void stopForImmediateReusing() {
         if (DEBUG) {
@@ -175,6 +220,7 @@ public final class MainPlayer extends Service {
         if (DEBUG) {
             Log.d(TAG, "destroy() called");
         }
+        mediaSessionManager.setOnVolumeKeyLongPressListener(null, null);
         cleanup();
     }
 

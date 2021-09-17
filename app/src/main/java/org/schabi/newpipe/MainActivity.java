@@ -581,41 +581,41 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //start tracking for long press (also needed for up for complete)
-        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
-            event.startTracking();
-            return true;
-        }
+//        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+//            event.startTracking();
+//            return true;
+//        }
 
         return super.onKeyDown(keyCode, event);
     }
 
-    @Override
-    public boolean onKeyLongPress(final int keyCode, final KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
-            Log.e(TAG, "LOOOOONG press KEYCODE_VOLUME_UP");
-            this.sendBroadcast(new Intent(App.PACKAGE_NAME + ".player.MainPlayer.ACTION_PLAY_NEXT"));
-            return true;
-        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-            Log.e(TAG, "LOOOOONG press KEYCODE_VOLUME_DOWN");
-            this.sendBroadcast(new Intent(App.PACKAGE_NAME + ".player.MainPlayer.ACTION_PLAY_PREVIOUS"));
-            return true;
-        }
-        return super.onKeyLongPress(keyCode, event);
-    }
-
-    @Override
-    public boolean onKeyUp(final int keyCode, final KeyEvent event) {
-        if ((event.getFlags() & KeyEvent.FLAG_CANCELED_LONG_PRESS) == 0) {
-            if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
-                Log.e(TAG, "Short press KEYCODE_VOLUME_UP");
-                return true;
-            } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-                Log.e(TAG, "Short press KEYCODE_VOLUME_DOWN");
-                return true;
-            }
-        }
-        return super.onKeyUp(keyCode, event);
-    }
+//    @Override
+//    public boolean onKeyLongPress(final int keyCode, final KeyEvent event) {
+//        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+//            Log.e(TAG, "LOOOOONG press KEYCODE_VOLUME_UP");
+//            this.sendBroadcast(new Intent(App.PACKAGE_NAME + ".player.MainPlayer.ACTION_PLAY_NEXT"));
+//            return true;
+//        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+//            Log.e(TAG, "LOOOOONG press KEYCODE_VOLUME_DOWN");
+//            this.sendBroadcast(new Intent(App.PACKAGE_NAME + ".player.MainPlayer.ACTION_PLAY_PREVIOUS"));
+//            return true;
+//        }
+//        return super.onKeyLongPress(keyCode, event);
+//    }
+//
+//    @Override
+//    public boolean onKeyUp(final int keyCode, final KeyEvent event) {
+//        if ((event.getFlags() & KeyEvent.FLAG_CANCELED_LONG_PRESS) == 0) {
+//            if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+//                Log.e(TAG, "Short press KEYCODE_VOLUME_UP");
+//                return true;
+//            } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+//                Log.e(TAG, "Short press KEYCODE_VOLUME_DOWN");
+//                return true;
+//            }
+//        }
+//        return super.onKeyUp(keyCode, event);
+//    }
 
     @Override
     public void onBackPressed() {
