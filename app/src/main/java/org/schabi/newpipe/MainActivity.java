@@ -54,10 +54,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
 
-import com.anggrayudi.hiddenapi.InternalAccessor;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 
+import org.chickenhook.restrictionbypass.RestrictionBypass;
 import org.schabi.newpipe.databinding.ActivityMainBinding;
 import org.schabi.newpipe.databinding.DrawerHeaderBinding;
 import org.schabi.newpipe.databinding.DrawerLayoutBinding;
@@ -90,6 +90,8 @@ import org.schabi.newpipe.util.TLSSocketFactoryCompat;
 import org.schabi.newpipe.util.ThemeHelper;
 import org.schabi.newpipe.views.FocusOverlayView;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -557,9 +559,50 @@ public class MainActivity extends AppCompatActivity {
             return ((OnKeyDownListener) fragment).onKeyDown(keyCode)
                     || super.onKeyDown(keyCode, event);
         }
-        return super.onKeyDown(keyCode, event);
+        try {
+            Field permission = RestrictionBypass.getDeclaredField(Manifest.permission.class,"SET_VOLUME_KEY_LONG_PRESS_LISTENER");
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            event.startTracking();
+            return true;
+        }
+//        Log.e(TAG, "onKeyDown: OHHHNO HE PRESSED A KEY");
+        this.sendBroadcast(new Intent(App.PACKAGE_NAME + ".player.MainPlayer.PLAY_PAUSE"));
 
-        Manifest.permission.SET_VOLUME_KEY_LONG_PRESS_LISTENER;
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onKeyLongPress(final int keyCode, final KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            Log.e(TAG, "LOOOOONG press KEYCODE_VOLUME_UP");
+            return true;
+        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            Log.e(TAG, "LOOOOONG press KEYCODE_VOLUME_DOWN");
+            return true;
+        }
+        return super.onKeyLongPress(keyCode, event);
+    }
+
+    @Override
+    public boolean onKeyUp(final int keyCode, final KeyEvent event) {
+        if ((event.getFlags() & KeyEvent.FLAG_CANCELED_LONG_PRESS) == 0) {
+            if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+                Log.e(TAG, "Short press KEYCODE_VOLUME_UP");
+                return true;
+            } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+                Log.e(TAG, "Short press KEYCODE_VOLUME_DOWN");
+                return true;
+            }
+        }
+        return super.onKeyUp(keyCode, event);
     }
 
     @Override

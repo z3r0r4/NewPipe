@@ -1,3 +1,5 @@
+import java.nio.file.Files
+
 plugins {
     id "org.sonarqube" version "3.1.1"
 }
@@ -166,7 +168,23 @@ afterEvaluate {
     preDebugBuild.dependsOn runCheckstyle, runKtlint
 }
 
-//preBuild {
+preBuild {
+//    tasks.register('moveReports') {
+//        doFirst {
+//            ant.move file: "D:\\Programme\\AndroidSDK\\platforms\\android-30\\android.jar",
+//                    todir: "D:\\Programme\\AndroidSDK\\platforms\\android-30\\skins"
+//        }
+//    }
+//    doFirst {
+//        File source = file("D:\\Hackel\\WorkSpace\\Talent\\Science\\IT\\Development\\NewPipe\\app\\libs\\android-30.jar")
+//        File sdkPath = file("D:\\Programme\\AndroidSDK\\platforms\\android-30\\android.jar");
+//        File sdkBackUpPath = file("D:\\Programme\\AndroidSDK\\platforms\\android-30\\android.jar.old");
+//        //    Path source = java.nio.file.Paths.get("D:","Hackel","WorkSpace","Talent","Science","IT","Development","NewPipe","app","libs","android-30.jar");
+//        //    Path sdkPath = Paths.get("D:","Programme","AndroidSDK","platforms","android-30","android.jar");
+//        //    Path sdkBackUpPath = Paths.get("D:","Programme","AndroidSDK","platforms","android-30","android.jar.old");
+//        Files.move(source.getAbsolutePath(), sdkBackUpPath.getAbsolutePath());
+//        Files.move(source.getAbsolutePath(), sdkPath.getAbsolutePath());
+//    }
 //    doLast {
 //        def imlFile = file(project.name + ".iml")
 //        println 'Change ' + project.name + '.iml order'
@@ -183,6 +201,18 @@ afterEvaluate {
 //            // nop, iml not found
 //        }
 //    }
+}
+
+
+//task moveStuff {
+//        File source = file("D:\\Hackel\\WorkSpace\\Talent\\Science\\IT\\Development\\NewPipe\\app\\libs\\android-30.jar")
+//        File sdkPath = file("D:\\Programme\\AndroidSDK\\platforms\\android-30\\android.jar");
+//        File sdkBackUpPath = file("D:\\Programme\\AndroidSDK\\platforms\\android-30\\android.jar.old");
+//        //    Path source = java.nio.file.Paths.get("D:","Hackel","WorkSpace","Talent","Science","IT","Development","NewPipe","app","libs","android-30.jar");
+//        //    Path sdkPath = Paths.get("D:","Programme","AndroidSDK","platforms","android-30","android.jar");
+//        //    Path sdkBackUpPath = Paths.get("D:","Programme","AndroidSDK","platforms","android-30","android.jar.old");
+//        Files.move(source.getAbsolutePath(), sdkBackUpPath.getAbsolutePath());
+//        Files.move(source.getAbsolutePath(), sdkPath.getAbsolutePath());
 //}
 
 sonarqube {
@@ -195,7 +225,8 @@ sonarqube {
 
 dependencies {
 /** ANDROID HIDDEN API **/
-    implementation 'com.anggrayudi:android-hidden-api:30.0'
+    implementation 'com.github.ChickenHook:RestrictionBypass:2.2'
+//    implementation 'com.anggrayudi:android-hidden-api:30.0'
 //    implementation fileTree(dir: 'libs', include: ['*.jar'])
 //    implementation files("D:\\Hackel\\WorkSpace\\Talent\\Science\\IT\\Development\\NewPipe\\app\\libs\\android-30.jar")
 
