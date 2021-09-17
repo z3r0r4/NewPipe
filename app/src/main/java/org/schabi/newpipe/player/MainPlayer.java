@@ -55,7 +55,8 @@ import static org.schabi.newpipe.util.Localization.assureCorrectAppLanguage;
  *
  * @author mauriciocolli
  */
-public final class MainPlayer extends Service implements MediaSessionManager.OnVolumeKeyLongPressListener {
+public final class MainPlayer extends Service
+        implements MediaSessionManager.OnVolumeKeyLongPressListener {
     private static final String TAG = "MainPlayer";
     private static final boolean DEBUG = Player.DEBUG;
 
@@ -119,12 +120,13 @@ public final class MainPlayer extends Service implements MediaSessionManager.OnV
     }
 
     @Override
-    public void onVolumeKeyLongPress(KeyEvent keyEvent) {
-        int flags = keyEvent.getFlags();
-        if(!(flags == FLAG_FROM_SYSTEM || flags == FLAG_LONG_PRESS)) return;
-
-        if(keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyEvent.getRepeatCount() <= 1) {
-            int keyCode = keyEvent.getKeyCode();
+    public void onVolumeKeyLongPress(final KeyEvent keyEvent) {
+        final int flags = keyEvent.getFlags();
+        if (!(flags == FLAG_FROM_SYSTEM || flags == FLAG_LONG_PRESS)) {
+            return;
+        }
+        if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyEvent.getRepeatCount() <= 1) {
+            final int keyCode = keyEvent.getKeyCode();
             if (keyCode == KEYCODE_VOLUME_UP) {
                 this.sendBroadcast(new Intent(ACTION_PLAY_NEXT));
                 Toast.makeText(this,  "UP", Toast.LENGTH_SHORT).show();

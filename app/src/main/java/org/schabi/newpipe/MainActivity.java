@@ -171,11 +171,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkLongPressListenerPermission() {
         Log.e(TAG, "checkLongPressListenerPermission: CHECKING PERMISSION FOR LONGPRESS");
-        String PERMISSION = Manifest.permission.SET_VOLUME_KEY_LONG_PRESS_LISTENER;
+        final String permissionString = Manifest.permission.SET_VOLUME_KEY_LONG_PRESS_LISTENER;
 
         int permission = 0;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            permission = checkSelfPermission(PERMISSION);
+            permission = checkSelfPermission(permissionString);
         } else {
             Log.e(TAG, "checkLongPressListenerPermission: COULDNT CHECK WRONG ANDROID VER");
         }
