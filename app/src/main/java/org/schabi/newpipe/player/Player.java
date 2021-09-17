@@ -1118,7 +1118,6 @@ public final class Player implements
 
     private void onBroadcastReceived(final Intent intent) {
         if (intent == null || intent.getAction() == null) {
-            Log.e(TAG, "onBroadcastReceived: NOACTION");
             return;
         }
 

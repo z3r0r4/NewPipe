@@ -24,13 +24,4 @@ allprojects {
         maven { url "https://jitpack.io" }
         maven { url "https://clojars.org/repo" }
     }
-
-//    gradle.projectsEvaluated {
-//        tasks.withType(JavaCompile) {
-//            options.compilerArgs.add('-Xbootclasspath/p:app/libs/android-30.jar')
-//            options.bootstrapClasspath = files(
-//                    new File("app\\libs\\android-30.jar").path
-//           )
-//        }
-//    }
 }

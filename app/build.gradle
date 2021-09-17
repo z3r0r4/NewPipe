@@ -1,5 +1,3 @@
-import java.nio.file.Files
-
 plugins {
     id "org.sonarqube" version "3.1.1"
 }
@@ -18,7 +16,7 @@ android {
         applicationId "org.schabi.newpipe"
         resValue "string", "app_name", "NewPipe"
         minSdkVersion 19
-        targetSdkVersion 30
+        targetSdkVersion 29
         versionCode 975
         versionName "0.21.9"
 
@@ -165,55 +163,8 @@ afterEvaluate {
     if (!System.properties.containsKey('skipFormatKtlint')) {
         preDebugBuild.dependsOn formatKtlint
     }
-//    preDebugBuild.dependsOn runCheckstyle, runKtlint
+    preDebugBuild.dependsOn runCheckstyle, runKtlint
 }
-
-preBuild {
-//    tasks.register('moveReports') {
-//        doFirst {
-//            ant.move file: "D:\\Programme\\AndroidSDK\\platforms\\android-30\\android.jar",
-//                    todir: "D:\\Programme\\AndroidSDK\\platforms\\android-30\\skins"
-//        }
-//    }
-//    doFirst {
-//        File source = file("D:\\Hackel\\WorkSpace\\Talent\\Science\\IT\\Development\\NewPipe\\app\\libs\\android-30.jar")
-//        File sdkPath = file("D:\\Programme\\AndroidSDK\\platforms\\android-30\\android.jar");
-//        File sdkBackUpPath = file("D:\\Programme\\AndroidSDK\\platforms\\android-30\\android.jar.old");
-//        //    Path source = java.nio.file.Paths.get("D:","Hackel","WorkSpace","Talent","Science","IT","Development","NewPipe","app","libs","android-30.jar");
-//        //    Path sdkPath = Paths.get("D:","Programme","AndroidSDK","platforms","android-30","android.jar");
-//        //    Path sdkBackUpPath = Paths.get("D:","Programme","AndroidSDK","platforms","android-30","android.jar.old");
-//        Files.move(source.getAbsolutePath(), sdkBackUpPath.getAbsolutePath());
-//        Files.move(source.getAbsolutePath(), sdkPath.getAbsolutePath());
-//    }
-//    doLast {
-//        def imlFile = file(project.name + ".iml")
-//        println 'Change ' + project.name + '.iml order'
-//        try {
-////            def parsedXml =
-//            def parsedXml = (new XmlParser()).parse(imlFile)
-//            def jdkNode = parsedXml.component[1].orderEntry.find { it.'@type' == 'jdk' }
-//            parsedXml.component[1].remove(jdkNode)
-//            def sdkString = "Android API " + android.compileSdkVersion.substring("android-".length()) + " Platform"
-//            new Node(parsedXml.component[1], 'orderEntry', ['type': 'jdk', 'jdkName': sdkString, 'jdkType': 'Android SDK'])
-//            groovy.xml.XmlUtil.serialize(parsedXml, new FileOutputStream(imlFile))
-//            println "CHANGED ORDER"
-//        } catch (FileNotFoundException e) {
-//            // nop, iml not found
-//        }
-//    }
-}
-
-
-//task moveStuff {
-//        File source = file("D:\\Hackel\\WorkSpace\\Talent\\Science\\IT\\Development\\NewPipe\\app\\libs\\android-30.jar")
-//        File sdkPath = file("D:\\Programme\\AndroidSDK\\platforms\\android-30\\android.jar");
-//        File sdkBackUpPath = file("D:\\Programme\\AndroidSDK\\platforms\\android-30\\android.jar.old");
-//        //    Path source = java.nio.file.Paths.get("D:","Hackel","WorkSpace","Talent","Science","IT","Development","NewPipe","app","libs","android-30.jar");
-//        //    Path sdkPath = Paths.get("D:","Programme","AndroidSDK","platforms","android-30","android.jar");
-//        //    Path sdkBackUpPath = Paths.get("D:","Programme","AndroidSDK","platforms","android-30","android.jar.old");
-//        Files.move(source.getAbsolutePath(), sdkBackUpPath.getAbsolutePath());
-//        Files.move(source.getAbsolutePath(), sdkPath.getAbsolutePath());
-//}
 
 sonarqube {
     properties {
@@ -224,13 +175,6 @@ sonarqube {
 }
 
 dependencies {
-/** ANDROID HIDDEN API **/
-//    implementation 'com.github.ChickenHook:RestrictionBypass:2.2'
-//    implementation 'com.anggrayudi:android-hidden-api:30.0'
-//    implementation fileTree(dir: 'libs', include: ['*.jar'])
-//    implementation files("D:\\Hackel\\WorkSpace\\Talent\\Science\\IT\\Development\\NewPipe\\app\\libs\\android-30.jar")
-
-//    classpath 'org.codehaus.groovy:gradle-groovy-android-plugin:0.3.6'
 /** Desugaring **/
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 

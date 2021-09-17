@@ -37,19 +37,14 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 
 import org.schabi.newpipe.App;
-import org.schabi.newpipe.R;
 import org.schabi.newpipe.databinding.PlayerBinding;
-import org.schabi.newpipe.player.event.OnKeyDownListener;
 import org.schabi.newpipe.util.DeviceUtils;
 import org.schabi.newpipe.util.ThemeHelper;
 
 import static android.view.KeyEvent.FLAG_FROM_SYSTEM;
 import static android.view.KeyEvent.FLAG_LONG_PRESS;
-import static android.view.KeyEvent.KEYCODE_MEDIA_NEXT;
-import static android.view.KeyEvent.KEYCODE_MEDIA_PREVIOUS;
 import static android.view.KeyEvent.KEYCODE_VOLUME_DOWN;
 import static android.view.KeyEvent.KEYCODE_VOLUME_UP;
 import static org.schabi.newpipe.util.Localization.assureCorrectAppLanguage;
@@ -68,8 +63,6 @@ public final class MainPlayer extends Service implements MediaSessionManager.OnV
     private WindowManager windowManager;
 
     private final IBinder mBinder = new MainPlayer.LocalBinder();
-
-
 
     public enum PlayerType {
         VIDEO,
@@ -175,8 +168,6 @@ public final class MainPlayer extends Service implements MediaSessionManager.OnV
         }
         return START_NOT_STICKY;
     }
-
-
 
     public void stopForImmediateReusing() {
         if (DEBUG) {

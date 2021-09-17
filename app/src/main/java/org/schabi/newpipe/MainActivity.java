@@ -55,7 +55,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.navigation.NavigationView;
 
 import org.schabi.newpipe.databinding.ActivityMainBinding;
 import org.schabi.newpipe.databinding.DrawerHeaderBinding;
@@ -89,7 +88,6 @@ import org.schabi.newpipe.util.TLSSocketFactoryCompat;
 import org.schabi.newpipe.util.ThemeHelper;
 import org.schabi.newpipe.views.FocusOverlayView;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -129,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         if (DEBUG) {
-            com.google.android.exoplayer2.util.Log.d(TAG, "onCreate() called with: "
+            Log.d(TAG, "onCreate() called with: "
                     + "savedInstanceState = [" + savedInstanceState + "]");
         }
 
@@ -253,13 +251,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        drawerLayoutBinding.navigation.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull final MenuItem item) {
-                return drawerItemSelected(item);
-            }
-        });
+        drawerLayoutBinding.navigation.setNavigationItemSelectedListener(this::drawerItemSelected);
         setupDrawerHeader();
     }
 
@@ -579,43 +571,8 @@ public class MainActivity extends AppCompatActivity {
             return ((OnKeyDownListener) fragment).onKeyDown(keyCode)
                     || super.onKeyDown(keyCode, event);
         }
-
-        //start tracking for long press (also needed for up for complete)
-//        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
-//            event.startTracking();
-//            return true;
-//        }
-
         return super.onKeyDown(keyCode, event);
     }
-
-//    @Override
-//    public boolean onKeyLongPress(final int keyCode, final KeyEvent event) {
-//        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
-//            Log.e(TAG, "LOOOOONG press KEYCODE_VOLUME_UP");
-//            this.sendBroadcast(new Intent(App.PACKAGE_NAME + ".player.MainPlayer.ACTION_PLAY_NEXT"));
-//            return true;
-//        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-//            Log.e(TAG, "LOOOOONG press KEYCODE_VOLUME_DOWN");
-//            this.sendBroadcast(new Intent(App.PACKAGE_NAME + ".player.MainPlayer.ACTION_PLAY_PREVIOUS"));
-//            return true;
-//        }
-//        return super.onKeyLongPress(keyCode, event);
-//    }
-//
-//    @Override
-//    public boolean onKeyUp(final int keyCode, final KeyEvent event) {
-//        if ((event.getFlags() & KeyEvent.FLAG_CANCELED_LONG_PRESS) == 0) {
-//            if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
-//                Log.e(TAG, "Short press KEYCODE_VOLUME_UP");
-//                return true;
-//            } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
-//                Log.e(TAG, "Short press KEYCODE_VOLUME_DOWN");
-//                return true;
-//            }
-//        }
-//        return super.onKeyUp(keyCode, event);
-//    }
 
     @Override
     public void onBackPressed() {
