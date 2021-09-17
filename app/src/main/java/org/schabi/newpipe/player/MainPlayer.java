@@ -22,6 +22,7 @@ package org.schabi.newpipe.player;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.session.MediaSessionManager;
 import android.os.Binder;
 import android.os.Build;
@@ -45,6 +46,8 @@ import org.schabi.newpipe.util.ThemeHelper;
 
 import static android.view.KeyEvent.FLAG_FROM_SYSTEM;
 import static android.view.KeyEvent.FLAG_LONG_PRESS;
+import static android.view.KeyEvent.KEYCODE_MEDIA_NEXT;
+import static android.view.KeyEvent.KEYCODE_MEDIA_PREVIOUS;
 import static android.view.KeyEvent.KEYCODE_VOLUME_DOWN;
 import static android.view.KeyEvent.KEYCODE_VOLUME_UP;
 import static org.schabi.newpipe.util.Localization.assureCorrectAppLanguage;
@@ -99,6 +102,7 @@ public final class MainPlayer extends Service
     //////////////////////////////////////////////////////////////////////////*/
 
     private MediaSessionManager mediaSessionManager;
+    private AudioManager audioManager;
     private Handler mHandler;
 
     @Override
@@ -113,7 +117,9 @@ public final class MainPlayer extends Service
         createView();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mediaSessionManager = getSystemService(MediaSessionManager.class);
+            audioManager = getSystemService(AudioManager.class);
         }
+
         mHandler = new Handler();
 
         mediaSessionManager.setOnVolumeKeyLongPressListener(this, mHandler);
@@ -127,14 +133,20 @@ public final class MainPlayer extends Service
         }
         if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyEvent.getRepeatCount() <= 1) {
             final int keyCode = keyEvent.getKeyCode();
+            int event = KEYCODE_MEDIA_NEXT;
+
             if (keyCode == KEYCODE_VOLUME_UP) {
-                this.sendBroadcast(new Intent(ACTION_PLAY_NEXT));
-                Toast.makeText(this,  "UP", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,  "NEXT", Toast.LENGTH_SHORT).show();
+//                this.sendBroadcast(new Intent(ACTION_PLAY_NEXT));
+                event = KEYCODE_MEDIA_NEXT;
+            } else if (keyCode == KEYCODE_VOLUME_DOWN) {
+                Toast.makeText(this, "PREVIOUS", Toast.LENGTH_SHORT).show();
+//                this.sendBroadcast(new Intent(ACTION_PLAY_PREVIOUS));
+                event = KEYCODE_MEDIA_PREVIOUS;
             }
-            if (keyCode == KEYCODE_VOLUME_DOWN) {
-                this.sendBroadcast(new Intent(ACTION_PLAY_PREVIOUS));
-                Toast.makeText(this, "DOWN", Toast.LENGTH_SHORT).show();
-            }
+
+            final KeyEvent skipEvent = new KeyEvent(keyEvent.getAction(), event);
+            audioManager.dispatchMediaKeyEvent(skipEvent);
         }
     }
 
