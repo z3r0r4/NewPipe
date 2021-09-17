@@ -149,6 +149,7 @@ public final class MainPlayer extends Service
             audioManager.dispatchMediaKeyEvent(skipEvent);
         }
     }
+//    TODO add settings to control this feature and note the needed permissions
 
     private void createView() {
         final PlayerBinding binding = PlayerBinding.inflate(LayoutInflater.from(this));
