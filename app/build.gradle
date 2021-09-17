@@ -166,24 +166,24 @@ afterEvaluate {
     preDebugBuild.dependsOn runCheckstyle, runKtlint
 }
 
-preBuild {
-    doLast {
-        def imlFile = file(project.name + ".iml")
-        println 'Change ' + project.name + '.iml order'
-        try {
-//            def parsedXml =
-            def parsedXml = (new XmlParser()).parse(imlFile)
-            def jdkNode = parsedXml.component[1].orderEntry.find { it.'@type' == 'jdk' }
-            parsedXml.component[1].remove(jdkNode)
+//preBuild {
+//    doLast {
+//        def imlFile = file(project.name + ".iml")
+//        println 'Change ' + project.name + '.iml order'
+//        try {
+////            def parsedXml =
+//            def parsedXml = (new XmlParser()).parse(imlFile)
+//            def jdkNode = parsedXml.component[1].orderEntry.find { it.'@type' == 'jdk' }
+//            parsedXml.component[1].remove(jdkNode)
 //            def sdkString = "Android API " + android.compileSdkVersion.substring("android-".length()) + " Platform"
 //            new Node(parsedXml.component[1], 'orderEntry', ['type': 'jdk', 'jdkName': sdkString, 'jdkType': 'Android SDK'])
 //            groovy.xml.XmlUtil.serialize(parsedXml, new FileOutputStream(imlFile))
 //            println "CHANGED ORDER"
-        } catch (FileNotFoundException e) {
-            // nop, iml not found
-        }
-    }
-}
+//        } catch (FileNotFoundException e) {
+//            // nop, iml not found
+//        }
+//    }
+//}
 
 sonarqube {
     properties {
@@ -195,7 +195,9 @@ sonarqube {
 
 dependencies {
 /** ANDROID HIDDEN API **/
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.anggrayudi:android-hidden-api:30.0'
+//    implementation fileTree(dir: 'libs', include: ['*.jar'])
+//    implementation files("D:\\Hackel\\WorkSpace\\Talent\\Science\\IT\\Development\\NewPipe\\app\\libs\\android-30.jar")
 
 //    classpath 'org.codehaus.groovy:gradle-groovy-android-plugin:0.3.6'
 /** Desugaring **/

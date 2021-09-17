@@ -20,6 +20,7 @@
 
 package org.schabi.newpipe;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -53,6 +54,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
 
+import com.anggrayudi.hiddenapi.InternalAccessor;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
 
@@ -556,6 +558,8 @@ public class MainActivity extends AppCompatActivity {
                     || super.onKeyDown(keyCode, event);
         }
         return super.onKeyDown(keyCode, event);
+
+        Manifest.permission.SET_VOLUME_KEY_LONG_PRESS_LISTENER;
     }
 
     @Override

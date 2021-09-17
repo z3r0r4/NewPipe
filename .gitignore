@@ -1,13 +1,10 @@
 .gitignore
 .gradle
-/local.properties
 .DS_Store
 /build
 /captures
 /app/app.iml
 /.idea
-!/.idea/modules/NewPipe.iml
-!/.idea/modules/app/NewPipe.app.iml
 *~
 .weblate
 *.class
