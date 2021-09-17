@@ -172,36 +172,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkLongPressListenerPermission() {
-        try {
-            Log.e(TAG, "checkLongPressListenerPermission: CHECKING PERMISSIONS4");
-//            Field PERMISSION =
-//                    RestrictionBypass.getDeclaredField(Manifest.class,
-//                            "permission.SET_VOLUME_KEY_LONG_PRESS_LISTENER");
-//            PERMISSION.setAccessible(true);
-//            String permision = (String) PERMISSION.get(PERMISSION);
+        Log.e(TAG, "checkLongPressListenerPermission: CHECKING PERMISSION FOR LONGPRESS");
+        String PERMISSION = Manifest.permission.SET_VOLUME_KEY_LONG_PRESS_LISTENER;
 
-            String permision = Manifest.permission.SET_VOLUME_KEY_LONG_PRESS_LISTENER;
-
-            Log.e(TAG, "checkLongPressListenerPermission: CHECKING PERMISSIONS5");
-            int permission = 0;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                permission = checkSelfPermission(permision);
-
-                Log.e(TAG, "checkLongPressListenerPermission: CHECKING PERMISSIONS6");
-            }
-
-            if (permission != PackageManager.PERMISSION_GRANTED) {
-
-                Log.e(TAG, "checkLongPressListenerPermission: CHECKING PERMISSIONS7");
-                throw new NullPointerException();
-            } else {
-                Log.e(TAG, "checkLongPressListenerPermission: PERMMMMISSION");
-            }
-        } catch (final NullPointerException e) {
-            e.printStackTrace();
+        int permission = 0;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            permission = checkSelfPermission(PERMISSION);
+        } else {
+            Log.e(TAG, "checkLongPressListenerPermission: COULDNT CHECK WRONG ANDROID VER");
         }
 
-
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            Log.e(TAG, "checkLongPressListenerPermission: permission was NOT GRANTED");
+            throw new NullPointerException();
+        } else {
+            Log.e(TAG, "checkLongPressListenerPermission: permission was GRANTED");
+        }
     }
 
     private void setupDrawer() throws Exception {
@@ -594,13 +580,11 @@ public class MainActivity extends AppCompatActivity {
                     || super.onKeyDown(keyCode, event);
         }
 
-        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+        //start tracking for long press (also needed for up for complete)
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
             event.startTracking();
             return true;
         }
-//        Log.e(TAG, "onKeyDown: OHHHNO HE PRESSED A KEY");
-        this.sendBroadcast(new Intent(App.PACKAGE_NAME + ".player.MainPlayer.PLAY_PAUSE"));
-
 
         return super.onKeyDown(keyCode, event);
     }
@@ -609,9 +593,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onKeyLongPress(final int keyCode, final KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
             Log.e(TAG, "LOOOOONG press KEYCODE_VOLUME_UP");
+            this.sendBroadcast(new Intent(App.PACKAGE_NAME + ".player.MainPlayer.ACTION_PLAY_NEXT"));
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
             Log.e(TAG, "LOOOOONG press KEYCODE_VOLUME_DOWN");
+            this.sendBroadcast(new Intent(App.PACKAGE_NAME + ".player.MainPlayer.ACTION_PLAY_PREVIOUS"));
             return true;
         }
         return super.onKeyLongPress(keyCode, event);
