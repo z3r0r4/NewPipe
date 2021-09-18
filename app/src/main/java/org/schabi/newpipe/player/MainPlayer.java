@@ -103,7 +103,6 @@ public final class MainPlayer extends Service
 
     private MediaSessionManager mediaSessionManager;
     private AudioManager audioManager;
-    private Handler mHandler;
 
     @Override
     public void onCreate() {
@@ -120,9 +119,8 @@ public final class MainPlayer extends Service
             audioManager = getSystemService(AudioManager.class);
         }
 
-        mHandler = new Handler();
-
-        mediaSessionManager.setOnVolumeKeyLongPressListener(this, mHandler);
+        Handler handler = new Handler();
+        mediaSessionManager.setOnVolumeKeyLongPressListener(this, handler);
     }
 
     @Override
