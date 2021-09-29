@@ -119,7 +119,7 @@ public final class MainPlayer extends Service
             audioManager = getSystemService(AudioManager.class);
         }
 
-        Handler handler = new Handler();
+        final Handler handler = new Handler();
         mediaSessionManager.setOnVolumeKeyLongPressListener(this, handler);
     }
 
