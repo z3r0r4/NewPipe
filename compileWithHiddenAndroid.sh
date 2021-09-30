@@ -7,6 +7,7 @@ mv $sdk/android.jar $sdk/android.jar.old #rename originalapi to unused
 mv $sdk/android-30fixed.jar $sdk/android.jar #rename hackapi to used
 echo "done replacing original!"
 
+#add code that fetches and asks for merge
 
 read -p "build gradle and install ( /n)" -n 1 -r
 echo    
